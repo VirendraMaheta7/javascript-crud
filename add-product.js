@@ -112,5 +112,6 @@ function addOption(category,value){
   }
 
  function onCancelClick(){
+     console.log("test commit");
       window.location.replace("index.html");
   }
