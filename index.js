@@ -182,6 +182,8 @@ function initializeProductsTable(){
             let deleteLink = document.createElement("a");
             deleteLink.setAttribute("id",dataItem.id);
             deleteLink.text = "Delete";
+            deleteLink.classList.add("ms-2");
+            deleteLink.classList.add("text-secondary");
             deleteLink.setAttribute("href", "javascript:void(0)");
             actionTd.appendChild(deleteLink);
   
