@@ -9,6 +9,7 @@ function checkIfAddorEditProduct(){
          productId = url.searchParams.get("productId");
         if(productId){
             document.getElementById("product-form").style.visibility = "hidden";
+            document.getElementById("product-form-heading").innerText = "Update Product Form"
             getProductById(productId).then((data)=>{
                 document.getElementById("product-form").style.visibility = "visible";
                 document.getElementById("loader").style.visibility = "hidden";
@@ -25,6 +26,7 @@ function checkIfAddorEditProduct(){
         }else{
             document.getElementById("loader").style.visibility = "hidden";
             document.getElementById("product-form").style.visibility = "visible";
+            document.getElementById("product-form-heading").innerText = "Add Product Form"
         }
         
 }
@@ -71,32 +73,28 @@ function addOption(category,value){
         document.getElementById("loader").style.visibility = "visible";
         if(productId){
             // edit product
-            fetch(`https://fakestoreapi.com/products/${productId}`,{
-                method:"PUT",
-                body: JSON.stringify(body)
-            }).then((data) => {
-                if(data && data.status == 200){
+            updateProduct(body).then((response)=>{
+                if(response && response.id){
                     document.getElementById("loader").style.visibility = "hidden";
                     window.location.replace("index.html");
                 }
             }).catch(error =>{
                 console.log(error);
-                document.getElementById("loader").style.visibility = "hidden";
+                    document.getElementById("loader").style.visibility = "hidden";
             })
         }else{
+            console.log("add product");
             // add product
-            fetch("https://fakestoreapi.com/products",{
-                method:"POST",
-                body:JSON.stringify(body)
-            }).then((data)=>{
-                if(data && data.status == 200){
+            addProduct(body).then((response)=>{
+                if(response && response.id){
                     document.getElementById("loader").style.visibility = "hidden";
-                    window.location.replace("index.html");
+                            window.location.replace("index.html");
                 }
             }).catch(error =>{
-                console.log('error:', error);
+                console.log("error",error);
                 document.getElementById("loader").style.visibility = "hidden";
             })
+           
         }
     }else{
         alert("Please fill required and correct data");
@@ -112,6 +110,17 @@ function addOption(category,value){
   }
 
  function onCancelClick(){
-     console.log("test commit");
       window.location.replace("index.html");
+  }
+
+  async function addProduct(body){
+    let response = await fetch("https://fakestoreapi.com/products",{method:"POST",body:JSON.stringify(body)});
+    let responseStatus = await response.json();
+    return responseStatus;
+  }
+
+  async function updateProduct(body){
+      let response = await fetch(`https://fakestoreapi.com/products/${productId}`,{ method:"PUT",body: JSON.stringify(body)});
+      let responseStatus = await response.json();
+      return responseStatus;
   }
