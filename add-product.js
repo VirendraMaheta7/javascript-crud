@@ -34,7 +34,6 @@ function checkIfAddorEditProduct(){
 function getProductCategories(){
     getAllProductsCategory().then((categories)=>{
         categoriesList = categories;
-      console.log('data:', categories)
       if(categories && categories.length > 0){
               addOption("Please select", "");
               categories.forEach((categoryObject)=>{
@@ -83,7 +82,6 @@ function addOption(category,value){
                     document.getElementById("loader").style.visibility = "hidden";
             })
         }else{
-            console.log("add product");
             // add product
             addProduct(body).then((response)=>{
                 if(response && response.id){
@@ -91,7 +89,6 @@ function addOption(category,value){
                             window.location.replace("index.html");
                 }
             }).catch(error =>{
-                console.log("error",error);
                 document.getElementById("loader").style.visibility = "hidden";
             })
            
